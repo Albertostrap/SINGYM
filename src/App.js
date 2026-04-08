@@ -414,7 +414,12 @@ export default function GymLandingPage() {
           <p className="section-kicker">Dove siamo</p>
           <h2 className="section-title">Vieni a trovarci</h2>
           <p className="section-text">
-            Via Industrie 16, Seren del Grappa (BL)
+           SIN GYM si trova in{" "}
+  <span className="accent">Via Industrie 16</span>, a{" "}
+  <span className="accent">Rasai di Seren del Grappa</span>.
+  È la soluzione ideale per chi cerca una palestra vicino Feltre con
+  sala pesi aperta 24 ore su 24, 7 giorni su 7, accesso libero e un
+  ambiente pensato per forza, ipertrofia e allenamento concreto.
           </p>
         </div>
 
