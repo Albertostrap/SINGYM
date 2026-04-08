@@ -9,12 +9,12 @@ export default function GymLandingPage() {
       text: "Allenamenti pensati per migliorare potenza, resistenza e performance.",
     },
     {
-      title: "Risultati visibili",
-      text: "Un ambiente costruito per aiutarti a trasformare il tuo corpo con costanza.",
+      title: "Risultati prima di tutto",
+      text: "Qui non si viene per passare il tempo: ogni dettaglio è orientato a forza, ipertrofia e miglioramento reale.",
     },
     {
-      title: "Energia ogni giorno",
-      text: "Più benessere, più motivazione, più controllo sul tuo stile di vita.",
+      title: "Accesso H24 riservato",
+      text: "Allenati con i tuoi tempi, senza vincoli e senza compromessi. Libertà totale, ogni giorno della settimana.",
     },
   ];
 
@@ -254,10 +254,15 @@ export default function GymLandingPage() {
 
         <section id="benefici" className="section container">
           <div className="section-header">
-            <p className="section-kicker">Perché scegliere noi</p>
+            <p className="section-kicker">Perché scegliere SIN GYM</p>
             <h2 className="section-title">
-              Una palestra che punta ai risultati, non alle promesse.
+              Un ambiente premium per chi prende sul serio i risultati.
             </h2>
+                    <p className="section-text">
+        SIN GYM è pensata per chi cerca qualcosa di più di una palestra:
+        accesso H24, atmosfera esclusiva, allenamento senza caos e un’identità
+        forte costruita intorno alla performance.
+      </p>
           </div>
 
           <div className="card-grid">
