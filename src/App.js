@@ -159,7 +159,25 @@ export default function GymLandingPage() {
                 </a>
               </div>
             </div>
-
+<div className="hero-socials">
+  <span className="hero-socials-label">Seguici su</span>
+  <a
+    href="https://www.instagram.com/palestrasingym/"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="hero-social-link"
+  >
+    Instagram
+  </a>
+  <a
+    href="https://www.facebook.com/FusSpak/?locale=it_IT"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="hero-social-link"
+  >
+    Facebook
+  </a>
+</div>
             <div className="hero-column">
               <div className="hero-card">
                 <img
