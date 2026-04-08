@@ -413,15 +413,17 @@ export default function GymLandingPage() {
         <div className="section-header">
           <p className="section-kicker">Dove siamo</p>
           <h2 className="section-title">Vieni a trovarci</h2>
-          <p className="section-text">
-           SIN GYM si trova in{" "}
+         <p className="section-text">
+  SIN GYM si trova in{" "}
   <span className="accent">Via Industrie 16</span>, a{" "}
   <span className="accent">Rasai di Seren del Grappa</span>.
-  <br />
+</p>
+
+<p className="section-text">
   È la soluzione ideale per chi cerca una palestra vicino Feltre con
   sala pesi aperta 24 ore su 24, 7 giorni su 7, accesso libero e un
   ambiente pensato per forza, ipertrofia e allenamento concreto.
-          </p>
+</p>
         </div>
 
        <iframe
