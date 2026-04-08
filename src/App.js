@@ -417,6 +417,7 @@ export default function GymLandingPage() {
            SIN GYM si trova in{" "}
   <span className="accent">Via Industrie 16</span>, a{" "}
   <span className="accent">Rasai di Seren del Grappa</span>.
+  <br />
   È la soluzione ideale per chi cerca una palestra vicino Feltre con
   sala pesi aperta 24 ore su 24, 7 giorni su 7, accesso libero e un
   ambiente pensato per forza, ipertrofia e allenamento concreto.
