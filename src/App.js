@@ -424,23 +424,25 @@ export default function GymLandingPage() {
           </p>
         </div>
 
-        <iframe
-          src="https://www.google.com/maps?q=46.00339650773597, 11.868644171165121&z=15&output=embed"
-          width="100%"
-          height="300"
-          style={{ border: 0, borderRadius: "16px" }}
-          loading="lazy"
-        />
-        <div style={{ marginTop: "20px" }}>
-          <a
-            href="https://maps.app.goo.gl/BjW6AbrBnJLWS4KGA"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="button button-primary"
-          >
-            Apri su Google Maps
-          </a>
-        </div>
+       <iframe
+    title="Mappa SIN GYM Seren del Grappa"
+    src="https://www.google.com/maps?q=46.00339650773597,11.868644171165121&z=15&output=embed"
+    width="100%"
+    height="300"
+    style={{ border: 0, borderRadius: "16px" }}
+    loading="lazy"
+  />
+
+  <div style={{ marginTop: "20px" }}>
+    <a
+      href="https://maps.app.goo.gl/BjW6AbrBnJLWS4KGA"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="button button-primary"
+    >
+      Apri su Google Maps
+    </a>
+  </div>
       </section>
       <footer className="site-footer">
         <div className="container footer-inner">
