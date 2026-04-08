@@ -126,6 +126,30 @@ input {
 .nav-link:hover::after {
   width: 100%;
 }
+.hero-socials {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.hero-socials-label {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.hero-social-link {
+  font-size: 14px;
+  color: #b6ff2d;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.hero-social-link:hover {
+  color: #d9ff93;
+  text-shadow: 0 0 6px rgba(182, 255, 45, 0.45);
+}
 .plan-badge {
   border-radius: 999px;
   padding: 6px 12px;
