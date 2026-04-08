@@ -82,8 +82,8 @@ export default function GymLandingPage() {
       name: "12 MESI",
       price: "€500",
       note: "",
-      saving: "Risparmi €120",
-      features: ["Accesso illimitato", "H24", "2 mesi gratis"],
+      saving: "Risparmi €220",
+      features: ["Accesso illimitato", "H24"],
       featured: true,
     },
   ];
