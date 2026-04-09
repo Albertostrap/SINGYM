@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import "./styles.css";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import "./styles.css";
 
 export default function GymLandingPage() {
@@ -18,33 +17,100 @@ export default function GymLandingPage() {
     },
   ];
 
-  const gymGallery = [
-    "Photos/sala-pesi-1.jpg",
-    "Photos/sala-pesi-2.jpg",
-    "Photos/sala-pesi-3.jpg",
-    "Photos/sala-pesi-4.jpg",
-    "Photos/sala-pesi-5.jpg",
-    "Photos/sala-pesi-6.jpg",
-    "Photos/sala-pesi-7.jpg",
-    "Photos/sala-pesi-8.jpg",
-    "Photos/sala-pesi-9.jpg",
-    "Photos/sala-pesi-10.jpg",
-    "Photos/sala-pesi-11.jpg",
-    "Photos/sala-pesi-12.jpg",
-    "Photos/sala-pesi-13.jpg",
-    "Photos/sala-pesi-14.jpg",
-    "Photos/sala-pesi-15.jpg",
-  ];
+  const imageContext = require.context(
+    "./assets/images",
+    false,
+    /\.(png|jpe?g|webp)$/i
+  );
+
+  const gymGallery = useMemo(() => {
+    return imageContext
+      .keys()
+      .sort((a, b) =>
+        a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" })
+      )
+      .map(imageContext);
+  }, []);
 
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isFading, setIsFading] = useState(false);
+
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
+  const autoplayRef = useRef(null);
+
+  const changeSlide = (newIndex) => {
+    setIsFading(true);
+
+    setTimeout(() => {
+      setCurrentSlide(newIndex);
+      setIsFading(false);
+    }, 300);
+  };
+
+  const nextSlide = () => {
+    if (!gymGallery.length) return;
+    changeSlide((currentSlide + 1) % gymGallery.length);
+  };
+
+  const prevSlide = () => {
+    if (!gymGallery.length) return;
+    changeSlide((currentSlide - 1 + gymGallery.length) % gymGallery.length);
+  };
+
+  const goToSlide = (index) => {
+    if (index === currentSlide) return;
+    changeSlide(index);
+  };
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % gymGallery.length);
-    }, 4000);
+    if (!gymGallery.length) return;
 
-    return () => clearInterval(interval);
+    gymGallery.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, [gymGallery]);
+
+  useEffect(() => {
+    if (!gymGallery.length) return;
+
+    autoplayRef.current = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % gymGallery.length);
+    }, 4500);
+
+    return () => clearInterval(autoplayRef.current);
   }, [gymGallery.length]);
+
+  const restartAutoplay = () => {
+    clearInterval(autoplayRef.current);
+
+    autoplayRef.current = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % gymGallery.length);
+    }, 4500);
+  };
+
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.changedTouches[0].clientX;
+    touchEndX.current = e.changedTouches[0].clientX;
+  };
+
+  const handleTouchMove = (e) => {
+    touchEndX.current = e.changedTouches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    const distance = touchStartX.current - touchEndX.current;
+    const minSwipeDistance = 50;
+
+    if (distance > minSwipeDistance) {
+      nextSlide();
+      restartAutoplay();
+    } else if (distance < -minSwipeDistance) {
+      prevSlide();
+      restartAutoplay();
+    }
+  };
 
   const plans = [
     {
@@ -77,7 +143,6 @@ export default function GymLandingPage() {
       features: ["Accesso illimitato", "H24"],
       featured: false,
     },
-
     {
       name: "12 MESI",
       price: "€500",
@@ -108,7 +173,7 @@ export default function GymLandingPage() {
       <header className="site-header">
         <div className="container header-inner">
           <div className="brand">
-            <img src="Photos/logo-singym_v3.png" alt="" className="logo" />
+            <img src="/logo-singym_v3.png" alt="SIN GYM logo" className="logo" />
             <span>SIN GYM</span>
           </div>
 
@@ -159,25 +224,27 @@ export default function GymLandingPage() {
                 </a>
               </div>
             </div>
-<div className="hero-socials">
-  <span className="hero-socials-label">Seguici su</span>
-  <a
-    href="https://www.instagram.com/palestrasingym/"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="hero-social-link"
-  >
-    Instagram
-  </a>
-  <a
-    href="https://www.facebook.com/FusSpak/?locale=it_IT"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="hero-social-link"
-  >
-    Facebook
-  </a>
-</div>
+
+            <div className="hero-socials">
+              <span className="hero-socials-label">Seguici su</span>
+              <a
+                href="https://www.instagram.com/palestrasingym/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hero-social-link"
+              >
+                Instagram
+              </a>
+              <a
+                href="https://www.facebook.com/FusSpak/?locale=it_IT"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hero-social-link"
+              >
+                Facebook
+              </a>
+            </div>
+
             <div className="hero-column">
               <div className="hero-card">
                 <img
@@ -217,6 +284,7 @@ export default function GymLandingPage() {
             </div>
           </div>
         </section>
+
         <section className="section container">
           <div className="section-header">
             <p className="section-kicker">Le nostre sale</p>
@@ -229,27 +297,65 @@ export default function GymLandingPage() {
             </p>
           </div>
 
-          <div className="gallery-showcase">
-            <img
-              src={gymGallery[currentSlide]}
-              alt={`Sala pesi SIN GYM ${currentSlide + 1}`}
-              className="gallery-showcase-image"
-            />
+          {gymGallery.length > 0 && (
+            <div
+              className="gallery-showcase"
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
+              <img
+                key={currentSlide}
+                src={gymGallery[currentSlide]}
+                alt={`Sala pesi SIN GYM ${currentSlide + 1}`}
+                className={`gallery-showcase-image ${
+                  isFading ? "gallery-showcase-image-fade" : ""
+                }`}
+                draggable="false"
+              />
 
-            <div className="gallery-dots">
-              {gymGallery.map((_, index) => (
-                <button
-                  key={index}
-                  className={`gallery-dot ${
-                    index === currentSlide ? "gallery-dot-active" : ""
-                  }`}
-                  onClick={() => setCurrentSlide(index)}
-                  aria-label={`Vai alla slide ${index + 1}`}
-                  type="button"
-                />
-              ))}
+              <button
+                type="button"
+                className="gallery-arrow gallery-arrow-left"
+                onClick={() => {
+                  prevSlide();
+                  restartAutoplay();
+                }}
+                aria-label="Foto precedente"
+              >
+                ‹
+              </button>
+
+              <button
+                type="button"
+                className="gallery-arrow gallery-arrow-right"
+                onClick={() => {
+                  nextSlide();
+                  restartAutoplay();
+                }}
+                aria-label="Foto successiva"
+              >
+                ›
+              </button>
+
+              <div className="gallery-dots">
+                {gymGallery.map((_, index) => (
+                  <button
+                    key={index}
+                    className={`gallery-dot ${
+                      index === currentSlide ? "gallery-dot-active" : ""
+                    }`}
+                    onClick={() => {
+                      goToSlide(index);
+                      restartAutoplay();
+                    }}
+                    aria-label={`Vai alla slide ${index + 1}`}
+                    type="button"
+                  />
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </section>
 
         <section id="benefici" className="section container">
@@ -258,11 +364,11 @@ export default function GymLandingPage() {
             <h2 className="section-title">
               Un ambiente premium per chi prende sul serio i risultati.
             </h2>
-                    <p className="section-text">
-        SIN GYM è pensata per chi cerca qualcosa di più di una palestra:
-        accesso H24, atmosfera esclusiva, allenamento senza caos e un’identità
-        forte costruita intorno alla performance.
-      </p>
+            <p className="section-text">
+              SIN GYM è pensata per chi cerca qualcosa di più di una palestra:
+              accesso H24, atmosfera esclusiva, allenamento senza caos e
+              un’identità forte costruita intorno alla performance.
+            </p>
           </div>
 
           <div className="card-grid">
@@ -346,9 +452,7 @@ export default function GymLandingPage() {
                     {plan.saving && (
                       <span
                         className={`plan-badge ${
-                          plan.featured
-                            ? "plan-badge-strong"
-                            : "plan-badge-soft"
+                          plan.featured ? "plan-badge-strong" : "plan-badge-soft"
                         }`}
                       >
                         {plan.saving}
@@ -391,7 +495,6 @@ export default function GymLandingPage() {
             <h2 className="section-title">Spingi con NOI!</h2>
 
             <div className="form-grid" style={{ marginTop: "24px" }}>
-              {/* WHATSAPP CTA */}
               <a
                 href="https://wa.me/393276696739?text=Ciao,vorrei%20informazioni%20per%20iscrivermi"
                 className="button button-primary"
@@ -403,54 +506,48 @@ export default function GymLandingPage() {
               <p className="cta-note">
                 Nessun impegno. Ti rispondiamo al più presto.
               </p>
-              {/* EMAIL SECONDARIA */}
-              {/*<a
-                href="mailto:palestrasingym@gmail.com?subject=Richiesta informazioni - SIN GYM"
-                className="whatsapp-link"
-              >
-                Oppure manda una mail
-            </a>*/}
             </div>
           </div>
         </section>
       </main>
+
       <section className="section container">
         <div className="section-header">
           <p className="section-kicker">Dove siamo</p>
           <h2 className="section-title">Vieni a trovarci</h2>
-         <p className="section-text">
-  SIN GYM si trova in{" "}
-  <span className="accent">Via Industrie 16</span>, a{" "}
-  <span className="accent">Rasai di Seren del Grappa</span>.
-</p>
+          <p className="section-text">
+            SIN GYM si trova in <span className="accent">Via Industrie 16</span>, a{" "}
+            <span className="accent">Rasai di Seren del Grappa</span>.
+          </p>
 
-<p className="section-text">
-  È la soluzione ideale per chi cerca una palestra vicino Feltre con
-  sala pesi aperta 24 ore su 24, 7 giorni su 7, accesso libero e un
-  ambiente pensato per forza, ipertrofia e allenamento concreto.
-</p>
+          <p className="section-text">
+            È la soluzione ideale per chi cerca una palestra vicino Feltre con
+            sala pesi aperta 24 ore su 24, 7 giorni su 7, accesso libero e un
+            ambiente pensato per forza, ipertrofia e allenamento concreto.
+          </p>
         </div>
 
-       <iframe
-    title="Mappa SIN GYM Seren del Grappa"
-    src="https://www.google.com/maps?q=46.00339650773597,11.868644171165121&z=15&output=embed"
-    width="100%"
-    height="300"
-    style={{ border: 0, borderRadius: "16px" }}
-    loading="lazy"
-  />
+        <iframe
+          title="Mappa SIN GYM Seren del Grappa"
+          src="https://www.google.com/maps?q=46.00339650773597,11.868644171165121&z=15&output=embed"
+          width="100%"
+          height="300"
+          style={{ border: 0, borderRadius: "16px" }}
+          loading="lazy"
+        />
 
-  <div style={{ marginTop: "20px" }}>
-    <a
-      href="https://maps.app.goo.gl/BjW6AbrBnJLWS4KGA"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="button button-primary"
-    >
-      Apri su Google Maps
-    </a>
-  </div>
+        <div style={{ marginTop: "20px" }}>
+          <a
+            href="https://maps.app.goo.gl/BjW6AbrBnJLWS4KGA"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="button button-primary"
+          >
+            Apri su Google Maps
+          </a>
+        </div>
       </section>
+
       <footer className="site-footer">
         <div className="container footer-inner">
           <div>SIN GYM — Via Industrie 16, Seren del Grappa (BL)</div>
