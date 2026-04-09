@@ -60,6 +60,7 @@ input {
   -webkit-user-select: none;
   touch-action: pan-y;
   background: #111;
+  margin-bottom: 8px;
 }
 
 .gallery-showcase-image {
@@ -117,17 +118,17 @@ input {
 }
 
 .gallery-dots {
-  position: absolute;
-  left: 50%;
-  bottom: 18px;
-  transform: translateX(-50%);
+  position: static;
+  transform: none;
   z-index: 3;
   display: flex;
+  justify-content: center;
   gap: 10px;
-  padding: 10px 14px;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.28);
-  backdrop-filter: blur(6px);
+  margin-top: 18px;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  backdrop-filter: none;
 }
 
 .gallery-dot {
