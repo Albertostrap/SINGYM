@@ -111,7 +111,36 @@ export default function GymLandingPage() {
       restartAutoplay();
     }
   };
+  
+const toggleMusic = async () => {
+  if (!audioRef.current) return;
 
+  try {
+    if (isMusicPlaying) {
+      audioRef.current.pause();
+      setIsMusicPlaying(false);
+    } else {
+      audioRef.current.volume = 0.35;
+      await audioRef.current.play();
+      setIsMusicPlaying(true);
+    }
+  } catch (error) {
+    console.error("Errore riproduzione audio:", error);
+  }
+};
+
+useEffect(() => {
+  const audio = audioRef.current;
+  if (!audio) return;
+
+  const handleEnded = () => setIsMusicPlaying(false);
+  audio.addEventListener("ended", handleEnded);
+
+  return () => {
+    audio.removeEventListener("ended", handleEnded);
+  };
+}, []);
+  
   const plans = [
     {
       name: "1 MESE",
@@ -196,6 +225,10 @@ export default function GymLandingPage() {
       </header>
 
       <main>
+          <audio ref={audioRef} loop preload="auto">
+          <source src="/audio/gym-theme.mp3" type="audio/mpeg" />
+            Il tuo browser non supporta l'audio HTML5.
+          </audio>
         <section className="hero-section">
           <div className="hero-glow" />
 
@@ -224,6 +257,14 @@ export default function GymLandingPage() {
                 </a>
               </div>
             </div>
+
+                  <button
+  type="button"
+  className="button button-secondary"
+  onClick={toggleMusic}
+>
+  {isMusicPlaying ? "Pause" : "Sound ON"}
+</button>
 
             <div className="hero-socials">
               <span className="hero-socials-label">Seguici su</span>
