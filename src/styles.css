@@ -17,11 +17,15 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
 .sound-button {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 14px 20px;
+  justify-content: center;
+  min-width: 220px;
+  padding: 14px 22px;
+  padding-left: 44px;
   border-radius: 999px;
   border: 1px solid rgba(110, 255, 110, 0.22);
   background: rgba(255, 255, 255, 0.04);
@@ -29,6 +33,7 @@ a {
   cursor: pointer;
   font-weight: 700;
   letter-spacing: 0.02em;
+  text-align: center;
   transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease,
     border-color 0.25s ease;
   backdrop-filter: blur(10px);
@@ -54,12 +59,15 @@ a {
 }
 
 .sound-button-dot {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
   width: 10px;
   height: 10px;
   border-radius: 50%;
   background: #7dff7d;
   box-shadow: 0 0 12px rgba(125, 255, 125, 0.75);
-  flex-shrink: 0;
 }
 
 .sound-button-active .sound-button-dot {
@@ -67,22 +75,23 @@ a {
 }
 
 .sound-button-text {
-  white-space: nowrap;
+  width: 100%;
+  text-align: center;
 }
 
 @keyframes soundPulse {
   0% {
-    transform: scale(1);
+    transform: translateY(-50%) scale(1);
     opacity: 1;
     box-shadow: 0 0 10px rgba(125, 255, 125, 0.7);
   }
   50% {
-    transform: scale(1.35);
+    transform: translateY(-50%) scale(1.35);
     opacity: 0.7;
     box-shadow: 0 0 20px rgba(125, 255, 125, 0.95);
   }
   100% {
-    transform: scale(1);
+    transform: translateY(-50%) scale(1);
     opacity: 1;
     box-shadow: 0 0 10px rgba(125, 255, 125, 0.7);
   }
@@ -98,6 +107,7 @@ input {
   background: #0a0a0a;
   color: #ffffff;
 }
+
 .hero-socials {
   margin-top: 18px;
   display: flex;
@@ -122,6 +132,7 @@ input {
   color: #d9ff93;
   text-shadow: 0 0 6px rgba(182, 255, 45, 0.45);
 }
+
 .gallery-showcase {
   position: relative;
   overflow: hidden;
@@ -131,6 +142,7 @@ input {
   touch-action: pan-y;
   background: #111;
   margin-bottom: 8px;
+  margin-top: 24px;
 }
 
 .gallery-showcase-image {
@@ -138,7 +150,8 @@ input {
   width: 100%;
   height: 520px;
   object-fit: cover;
-  border-radius: 20px;
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   opacity: 1;
   transition: opacity 0.6s ease;
   animation: kenburns 12s ease-in-out infinite alternate;
@@ -202,11 +215,11 @@ input {
 }
 
 .gallery-dot {
-  width: 10px;
-  height: 10px;
-  border: none;
+  width: 12px;
+  height: 12px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.55);
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
   cursor: pointer;
   transition: transform 0.2s ease, background 0.2s ease;
 }
@@ -216,8 +229,9 @@ input {
 }
 
 .gallery-dot-active {
-  background: #64d66a;
+  background: #b6ff2d;
   transform: scale(1.2);
+  box-shadow: 0 0 8px rgba(182, 255, 45, 0.5);
 }
 
 @media (max-width: 768px) {
@@ -245,6 +259,7 @@ input {
     padding: 8px 12px;
   }
 }
+
 .container {
   width: min(1200px, calc(100% - 48px));
   margin: 0 auto;
@@ -268,10 +283,14 @@ input {
 }
 
 .brand {
-  font-size: 18px;
+  display: flex;
+  align-items: center;
+  gap: 0px;
+  font-size: 22px;
   font-weight: 700;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.18em;
 }
+
 .brand span {
   color: #ffffff;
   transition: all 0.2s ease;
@@ -280,44 +299,38 @@ input {
 .brand:hover span {
   color: #b6ff2d;
   text-shadow: 0 0 8px rgba(182, 255, 45, 0.6);
-
 }
+
 .logo {
   height: 60px;
   width: auto;
   object-fit: contain;
   display: block;
   transition: transform 0.2s ease, filter 0.2s ease;
-  filter: 
+  filter:
     drop-shadow(0 0 6px rgba(182, 255, 45, 0.6))
     drop-shadow(0 0 12px rgba(182, 255, 45, 0.25));
 }
 
 .logo:hover {
   transform: scale(1.05);
-  filter: 
+  filter:
     drop-shadow(0 0 8px rgba(182, 255, 45, 0.8))
     drop-shadow(0 0 16px rgba(182, 255, 45, 0.4));
-
 }
+
 .cta-note {
   margin-top: 10px;
   font-size: 14px;
   color: rgba(255, 255, 255, 0.6);
   text-align: center;
 }
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 0px;
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-}
+
 .nav {
   display: flex;
   gap: 28px;
 }
+
 .nav-link {
   position: relative;
   color: rgba(255, 255, 255, 0.72);
@@ -342,30 +355,7 @@ input {
 .nav-link:hover::after {
   width: 100%;
 }
-.hero-socials {
-  margin-top: 18px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
 
-.hero-socials-label {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.55);
-}
-
-.hero-social-link {
-  font-size: 14px;
-  color: #b6ff2d;
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
-
-.hero-social-link:hover {
-  color: #d9ff93;
-  text-shadow: 0 0 6px rgba(182, 255, 45, 0.45);
-}
 .plan-badge {
   border-radius: 999px;
   padding: 6px 12px;
@@ -377,53 +367,7 @@ input {
   align-items: center;
   justify-content: center;
 }
-.gallery-showcase {
-  position: relative;
-  margin-top: 24px;
-}
 
-.gallery-showcase-image {
-  width: 100%;
-  height: 520px;
-  object-fit: cover;
-  display: block;
-  border-radius: 28px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.gallery-dots {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 18px;
-}
-
-.gallery-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 999px;
-  border: none;
-  background: rgba(255, 255, 255, 0.2);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.gallery-dot-active {
-  background: #b6ff2d;
-  box-shadow: 0 0 8px rgba(182, 255, 45, 0.5);
-}
-
-@media (max-width: 960px) {
-  .gallery-showcase-image {
-    height: 420px;
-  }
-}
-
-@media (max-width: 640px) {
-  .gallery-showcase-image {
-    height: 300px;
-  }
-}
 .plan-badge-strong {
   background: #b6ff2d;
   color: #0a0a0a;
@@ -758,17 +702,6 @@ input {
   gap: 12px;
 }
 
-.plan-badge {
-  border-radius: 999px;
-  background: #b6ff2d;
-  color: #0a0a0a;
-  padding: 6px 12px;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-
 .plan-price-row {
   display: flex;
   align-items: flex-end;
@@ -804,6 +737,7 @@ input {
 .plan-button {
   margin-top: 20px;
 }
+
 .plan-dot {
   width: 8px;
   height: 8px;
@@ -931,6 +865,10 @@ input {
     width: 100%;
   }
 
+  .sound-button {
+    width: 100%;
+  }
+
   .hero-overlay-content {
     left: 18px;
     right: 18px;
@@ -946,6 +884,5 @@ input {
   .plan-card,
   .feature-card {
     padding: 24px;
-
-}
+  }
 }
