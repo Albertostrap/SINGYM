@@ -34,10 +34,12 @@ export default function GymLandingPage() {
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isFading, setIsFading] = useState(false);
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
 
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
   const autoplayRef = useRef(null);
+  const audioRef = useRef(null);
 
   const changeSlide = (newIndex) => {
     setIsFading(true);
@@ -111,36 +113,36 @@ export default function GymLandingPage() {
       restartAutoplay();
     }
   };
-  
-const toggleMusic = async () => {
-  if (!audioRef.current) return;
 
-  try {
-    if (isMusicPlaying) {
-      audioRef.current.pause();
-      setIsMusicPlaying(false);
-    } else {
-      audioRef.current.volume = 0.35;
-      await audioRef.current.play();
-      setIsMusicPlaying(true);
+  const toggleMusic = async () => {
+    if (!audioRef.current) return;
+
+    try {
+      if (isMusicPlaying) {
+        audioRef.current.pause();
+        setIsMusicPlaying(false);
+      } else {
+        audioRef.current.volume = 0.35;
+        await audioRef.current.play();
+        setIsMusicPlaying(true);
+      }
+    } catch (error) {
+      console.error("Errore riproduzione audio:", error);
     }
-  } catch (error) {
-    console.error("Errore riproduzione audio:", error);
-  }
-};
-
-useEffect(() => {
-  const audio = audioRef.current;
-  if (!audio) return;
-
-  const handleEnded = () => setIsMusicPlaying(false);
-  audio.addEventListener("ended", handleEnded);
-
-  return () => {
-    audio.removeEventListener("ended", handleEnded);
   };
-}, []);
-  
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const handleEnded = () => setIsMusicPlaying(false);
+    audio.addEventListener("ended", handleEnded);
+
+    return () => {
+      audio.removeEventListener("ended", handleEnded);
+    };
+  }, []);
+
   const plans = [
     {
       name: "1 MESE",
@@ -225,10 +227,11 @@ useEffect(() => {
       </header>
 
       <main>
-          <audio ref={audioRef} loop preload="auto">
+        <audio ref={audioRef} loop preload="auto">
           <source src="/audio/gym-theme.mp3" type="audio/mpeg" />
-            Il tuo browser non supporta l'audio HTML5.
-          </audio>
+          Il tuo browser non supporta l'audio HTML5.
+        </audio>
+
         <section className="hero-section">
           <div className="hero-glow" />
 
@@ -255,16 +258,15 @@ useEffect(() => {
                 <a href="#piani" className="button button-secondary">
                   Abbonati
                 </a>
+                <button
+                  type="button"
+                  className="button button-secondary"
+                  onClick={toggleMusic}
+                >
+                  {isMusicPlaying ? "Pause" : "Sound ON"}
+                </button>
               </div>
             </div>
-
-                  <button
-  type="button"
-  className="button button-secondary"
-  onClick={toggleMusic}
->
-  {isMusicPlaying ? "Pause" : "Sound ON"}
-</button>
 
             <div className="hero-socials">
               <span className="hero-socials-label">Seguici su</span>
