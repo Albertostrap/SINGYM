@@ -40,6 +40,45 @@ export default function GymLandingPage() {
   const touchEndX = useRef(0);
   const autoplayRef = useRef(null);
   const audioRef = useRef(null);
+  const fadeIntervalRef = useRef(null);
+
+  const TARGET_VOLUME = 0.35;
+  const FADE_DURATION = 900;
+  const FADE_STEP_MS = 60;
+
+  const clearFadeInterval = () => {
+    if (fadeIntervalRef.current) {
+      clearInterval(fadeIntervalRef.current);
+      fadeIntervalRef.current = null;
+    }
+  };
+
+  const fadeAudio = (from, to, onComplete) => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    clearFadeInterval();
+
+    const steps = Math.max(1, Math.floor(FADE_DURATION / FADE_STEP_MS));
+    const delta = (to - from) / steps;
+    let currentStep = 0;
+
+    audio.volume = Math.max(0, Math.min(1, from));
+
+    fadeIntervalRef.current = setInterval(() => {
+      currentStep += 1;
+
+      const nextVolume =
+        currentStep >= steps ? to : audio.volume + delta;
+
+      audio.volume = Math.max(0, Math.min(1, nextVolume));
+
+      if (currentStep >= steps) {
+        clearFadeInterval();
+        if (onComplete) onComplete();
+      }
+    }, FADE_STEP_MS);
+  };
 
   const changeSlide = (newIndex) => {
     setIsFading(true);
@@ -115,16 +154,23 @@ export default function GymLandingPage() {
   };
 
   const toggleMusic = async () => {
-    if (!audioRef.current) return;
+    const audio = audioRef.current;
+    if (!audio) return;
 
     try {
       if (isMusicPlaying) {
-        audioRef.current.pause();
-        setIsMusicPlaying(false);
+        fadeAudio(audio.volume, 0, () => {
+          audio.pause();
+          audio.currentTime = 0;
+          setIsMusicPlaying(false);
+        });
       } else {
-        audioRef.current.volume = 0.35;
-        await audioRef.current.play();
+        clearFadeInterval();
+        audio.volume = 0;
+        await audio.play();
         setIsMusicPlaying(true);
+
+        fadeAudio(0, TARGET_VOLUME);
       }
     } catch (error) {
       console.error("Errore riproduzione audio:", error);
@@ -136,10 +182,12 @@ export default function GymLandingPage() {
     if (!audio) return;
 
     const handleEnded = () => setIsMusicPlaying(false);
+
     audio.addEventListener("ended", handleEnded);
 
     return () => {
       audio.removeEventListener("ended", handleEnded);
+      clearFadeInterval();
     };
   }, []);
 
@@ -258,12 +306,17 @@ export default function GymLandingPage() {
                 <a href="#piani" className="button button-secondary">
                   Abbonati
                 </a>
+
                 <button
                   type="button"
-                  className="button button-secondary"
+                  className={`sound-button ${isMusicPlaying ? "sound-button-active" : ""}`}
                   onClick={toggleMusic}
+                  aria-label={isMusicPlaying ? "Disattiva musica" : "Attiva musica"}
                 >
-                  {isMusicPlaying ? "Pause" : "Sound ON"}
+                  <span className="sound-button-dot" />
+                  <span className="sound-button-text">
+                    {isMusicPlaying ? "Sound OFF" : "Sound Experience"}
+                  </span>
                 </button>
               </div>
             </div>
