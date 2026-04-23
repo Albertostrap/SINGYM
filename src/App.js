@@ -35,6 +35,10 @@ export default function GymLandingPage() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isFading, setIsFading] = useState(false);
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+  const [cookieAccepted, setCookieAccepted] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return localStorage.getItem("cookie_consent") === "true";
+  });
 
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
@@ -102,6 +106,13 @@ export default function GymLandingPage() {
   const goToSlide = (index) => {
     if (index === currentSlide) return;
     changeSlide(index);
+  };
+
+  const acceptCookies = () => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("cookie_consent", "true");
+    }
+    setCookieAccepted(true);
   };
 
   useEffect(() => {
@@ -319,26 +330,26 @@ export default function GymLandingPage() {
                   </span>
                 </button>
               </div>
-            </div>
 
-            <div className="hero-socials">
-              <span className="hero-socials-label">Seguici su</span>
-              <a
-                href="https://www.instagram.com/palestrasingym/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hero-social-link"
-              >
-                Instagram
-              </a>
-              <a
-                href="https://www.facebook.com/FusSpak/?locale=it_IT"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hero-social-link"
-              >
-                Facebook
-              </a>
+              <div className="hero-socials">
+                <span className="hero-socials-label">Seguici su</span>
+                <a
+                  href="https://www.instagram.com/palestrasingym/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hero-social-link"
+                >
+                  Instagram
+                </a>
+                <a
+                  href="https://www.facebook.com/FusSpak/?locale=it_IT"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hero-social-link"
+                >
+                  Facebook
+                </a>
+              </div>
             </div>
 
             <div className="hero-column">
@@ -644,18 +655,56 @@ export default function GymLandingPage() {
         </div>
       </section>
 
-      <footer className="site-footer">
+      {!cookieAccepted && (
+        <div className="cookie-banner">
+          <div className="container cookie-banner-inner">
+            <p className="cookie-banner-text">
+              Questo sito utilizza cookie tecnici e strumenti collegati a servizi
+              di terze parti per migliorare l’esperienza di navigazione. Continuando,
+              accetti l’uso dei cookie. Leggi la nostra{" "}
+              <a href="/privacy.html">Privacy Policy</a> e la{" "}
+              <a href="/cookie.html">Cookie Policy</a>.
+            </p>
+
+            <button
+              type="button"
+              className="button button-primary cookie-banner-button"
+              onClick={acceptCookies}
+            >
+              Accetta
+            </button>
+          </div>
+        </div>
+      )}
+
+      <footer className={`site-footer ${!cookieAccepted ? "site-footer-with-cookie-banner" : ""}`}>
         <div className="container footer-inner">
           <div>SIN GYM — Via Industrie 16, Seren del Grappa (BL)</div>
 
           <div className="footer-links">
-            <a href="https://www.instagram.com/palestrasingym/">Instagram</a>
-            <a href="https://www.facebook.com/FusSpak/?locale=it_IT">
+            <a
+              href="https://www.instagram.com/palestrasingym/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Instagram
+            </a>
+            <a
+              href="https://www.facebook.com/FusSpak/?locale=it_IT"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Facebook
             </a>
-            <a href="https://wa.me/393276696739?text=Ciao,vorrei%20informazioni%20per%20iscrivermi">
+            <a
+              href="https://wa.me/393276696739?text=Ciao,vorrei%20informazioni%20per%20iscrivermi"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               WhatsApp
             </a>
+            <a href="/privacy.html">Privacy Policy</a>
+            <a href="/cookie.html">Cookie Policy</a>
           </div>
         </div>
       </footer>
